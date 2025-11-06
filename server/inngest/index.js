@@ -1,10 +1,12 @@
 import { Inngest } from 'inngest'
 import User from '../models/User.js'
+import Booking from '../models/Booking.js'
+import Show from '../models/Show.js'
 
-// Create a client to send and receive events
+// INNGEST - CLIENT TO SEND/RECEIVE EVENTS
 export const inngest = new Inngest({ id: 'movie-ticket-booking' })
 
-// Inngest function to save user data to a database
+// INNGEST - SAVE USER DATA TO DATABASE
 const syncUserCreation = inngest.createFunction(
     { id: 'sync-user-from-clerk' },
     { event: 'clerk/user.created' },
@@ -23,7 +25,7 @@ const syncUserCreation = inngest.createFunction(
     }
 )
 
-// Inngest function to delete user from database
+// INNGEST - DELETE USER FROM DATABASE
 const syncUserDeletion = inngest.createFunction(
     { id: 'delete-user-with-clerk' },
     { event: 'clerk/user.deleted' },
@@ -34,7 +36,7 @@ const syncUserDeletion = inngest.createFunction(
     }
 )
 
-// Inngest function to update user data in database
+// INNGEST - UPDATE USER DATA FROM DATABASE
 const syncUserUpdation = inngest.createFunction(
     { id: 'update-user-from-clerk' },
     { event: 'clerk/user.updated' },
@@ -53,8 +55,37 @@ const syncUserUpdation = inngest.createFunction(
     }
 )
 
+// INNGEST - CANCEL BOOKING + RELEASE SHOW SEATS 
+// IF THE BOOKING PROCESS DID NOT REACH PAYMENT AFTER 10 MINUTES
+const releaseSeatsAndDeleteBooking = inngest.createFunction (
+    {id: 'release-seats-delete-booking'},
+    {event: 'app/checkpayment'},
+    async ({ event, step }) => {
+        const tenMinutesLater = new Date(Date.now() + 10 * 60 * 1000)
+        await step.sleepUntil('wait-for-10-minutes', tenMinutesLater)
+
+        await step.run('check-payment-status', async () => {
+            const bookingId = event.data.bookingId
+            const booking = await Booking.findById(bookingId)
+
+            // IF PAYMENT IS NOT MADE, RELEASE SEATS + DELETE BOOKING
+            if(!booking.isPaid) {
+                const show = await Show.findById(booking.show)
+                booking.bookedSeats.forEach((seat) => {
+                    delete show.occupiedSeats[seat]
+                })
+
+                show.markModified('occupiedSeats')
+                await show.save()
+                await Booking.findByIdAndDelete(booking._id)
+            }
+        })
+    }
+)
+
 export const functions = [
     syncUserCreation,
     syncUserDeletion,
-    syncUserUpdation
+    syncUserUpdation,
+    releaseSeatsAndDeleteBooking
 ]
