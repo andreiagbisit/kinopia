@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Movie from '../models/Movie.js'
 import Show from '../models/Show.js'
+import { inngest } from '../inngest/index.js'
 
 // TMDB API - TO GET 'NOW PLAYING' MOVIES
 export const getNowPlayingMovies = async (req, res) => {
@@ -18,7 +19,7 @@ export const getNowPlayingMovies = async (req, res) => {
     }
 }
 
-// ADD A NEW MOVIE TO THE DATABASE
+// ADD A NEW SHOW TO THE DATABASE
 export const addShow = async (req, res) => {
     try {
         const {movieId, showsInput, showPrice} = req.body
@@ -74,6 +75,12 @@ export const addShow = async (req, res) => {
         if(showsToCreate.length > 0) {
             await Show.insertMany(showsToCreate)
         }
+
+        // TRIGGER INNGEST EVENT
+        await inngest.send({
+            name: 'app/show.added',
+            data: {movieTitle: movie.title}
+        })
 
         res.json({success: true, message: 'Show added successfully.'})
 
