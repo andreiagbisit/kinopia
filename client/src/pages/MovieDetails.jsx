@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { dummyDateTimeData, dummyShowsData } from '../assets/assets'
 import BlurCircle from '../components/BlurCircle'
-import { Heart, PlayCircleIcon, StarIcon } from 'lucide-react'
+import { Heart, Tickets, StarIcon, UserStar, CirclePlus } from 'lucide-react'
 import timeFormat from '../lib/timeFormat'
 import DateSelect from '../components/DateSelect'
 import MovieCard from '../components/MovieCard'
 import Loading from '../components/Loading'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
+import pageTitle from '../lib/pageTitle'
 
 const MovieDetails = () => {
   
@@ -32,7 +32,7 @@ const MovieDetails = () => {
 
   const handleFavorite = async () => {
     try {
-      if(!user) return toast.error('Please sign in to proceed with your request.')
+      if(!user) return toast.error('Please sign in to add this movie under Favorites.')
 
       const { data } = await axios.post('/api/user/update-favorite', {movieId: id},
       {headers: { Authorization: `Bearer ${await getToken()}` }})
@@ -49,6 +49,8 @@ const MovieDetails = () => {
   useEffect(() => {
     getShow()
   },[id])
+
+  pageTitle(show ? `${show.movie.title} | Kinopia` : 'Movie Details | Kinopia')
 
   return show ? (
     <div className='px-6 md:px-16 lg:px-40 pt-30 md:pt-50'>
@@ -83,26 +85,25 @@ const MovieDetails = () => {
           </p>
 
           <div className='flex items-center flex-wrap gap-4 mt-4'>
-            <button className='flex items-center gap-2 px-7 py-3 text-sm bg-zinc-800 hover:bg-zinc-900 transition rounded-md font-medium cursor-pointer active:scale-95'>
-              <PlayCircleIcon className='w-5 h-5' />
-              
-              Watch Trailer
-            </button>
-
-            <a href='#dateSelect' className='px-10 py-3 text-sm bg-primary hover:bg-primary-dull transition rounded-md font-medium cursor-pointer active:scale-95'>
-              Buy Tickets
+            <a href='#dateSelect' className='px-10 py-3 bg-primary hover:bg-primary-dull transition duration-500 rounded-full font-semibold cursor-pointer active:scale-95 flex items-center gap-2'>
+              <Tickets className='inline' width={15} /> Buy Tickets
             </a>
 
-            <button className='bg-zinc-700 p-2.5 rounded-full transition cursor-pointer active:scale-95'
-                    onClick={handleFavorite}>
+            <button className='bg-zinc-700 hover:bg-zinc-500 p-2.5 rounded-full transition duration-500 cursor-pointer active:scale-95'
+                    onClick={handleFavorite}
+                    title={
+                      favoriteMovies.find(movie => movie._id === id)
+                        ? 'Remove from Favorites'
+                        : 'Add to Favorites'
+                    }>
               <Heart className={`w-5 h-5 ${favoriteMovies.find(movie => movie._id === id) ? 'fill-primary text-primary' : ''}`} />
             </button>
           </div>
         </div>
       </div>
 
-      <p className='text-lg font-medium mt-20'>
-        Cast
+      <p className='text-2xl font-medium mt-20'>
+        <UserStar className='inline -mt-1' width={21} /> Cast
       </p>
       
       <div className='overflow-x-auto no-scrollbar mt-8 pb-4'>
@@ -123,8 +124,8 @@ const MovieDetails = () => {
 
       <DateSelect dateTime={show.dateTime} id={id} />
 
-      <p className='text-lg font-medium mt-20 mb-8'>
-        You may also like...
+      <p className='text-4xl font-medium my-16'>
+        You may also <span class='text-primary font-bold'>like</span>...
       </p>
 
       <div className='flex flex-wrap max-sm:justify-center gap-8'>
@@ -134,9 +135,9 @@ const MovieDetails = () => {
       </div>
 
       <div className='flex justify-center mt-20'>
-          <button className='px-10 py-3 text-sm bg-primary hover:bg-primary-dull transition rounded-md font-medium cursor-pointer'
+          <button className='px-10 py-3 bg-primary hover:bg-primary-dull transition duration-500 rounded-full font-semibold cursor-pointer'
                   onClick={() => {navigate('/movies'); scrollTo(0, 0)}}>
-            Show More
+            <CirclePlus className='inline -mt-1' width={18} /> Show More
           </button>
       </div>
 

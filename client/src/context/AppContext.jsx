@@ -28,7 +28,7 @@ export const AppProvider = ({ children }) => {
 
             if(!data.isAdmin && location.pathname.startsWith('/admin')){
                 navigate('/')
-                toast.error('You are not authorized to access the admin dashboard.')
+                toast.error('You are not authorized to access the admin dashboard.', { id: 'unauthorized' })
             }
 
         } catch (error) {

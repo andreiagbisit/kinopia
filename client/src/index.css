@@ -2,12 +2,66 @@
 @import 'tailwindcss';
 
 @theme {
+  --breakpoint-md: 52.5rem; /* 840px */
   --color-primary: #7545F8;
-  --color-primary-dull: #5838D6;
+  --color-primary-dull: #5234C7;
+}
+
+@layer components {
+  .nav-link {
+    @apply transition duration-500 hover:text-primary font-semibold flex items-center gap-2;
+  }
+
+  .footer-link {
+    @apply transition duration-500 hover:text-primary flex items-center gap-2;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  20% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateX(-50%);
+    opacity: 1;
+  }
+
+  70% {
+    transform: translateX(-50%);
+    opacity: 1;
+  }
+
+  80% {
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+
+  90% {
+    transform: translateX(0%);
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-marquee {
+  display: inline-block;
+  animation: marquee 12s linear infinite;
+  white-space: nowrap;
 }
 
 *{
   font-family: 'Figtree', sans-serif;
+  @apply selection:bg-primary selection:text-white;
 }
 
 body {

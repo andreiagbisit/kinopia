@@ -1,48 +1,88 @@
 import { assets } from '../assets/assets'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useAppContext } from '../context/AppContext'
+import { Phone, Mail, MapPin } from 'lucide-react'
 
 const Footer = () => {
+  
+  const [isOpen, setIsOpen] = useState(false)
+  const {user} = useAppContext()
+
   return (
-    <footer className='px-6 md:px-16 lg:px-36 mt-40 w-full text-zinc-300'>
+    <footer className='px-6 md:px-16 lg:px-36 mt-10 w-full text-zinc-300'>
       <div className='flex flex-col md:flex-row justify-between w-full gap-10 border-b border-zinc-500 pb-14'>
         <div className='md:max-w-96'>
           <img alt='logo' className='h-11' src={assets.logo} />
           
           <p className='mt-6 text-sm'>
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            Kinopia is your all-in-one movie ticketing platform—making it easier than ever to discover films, 
+            check schedules, and secure your seats online. Whether you're into the latest blockbusters or 
+            local favorites, Kinopia brings the cinema experience right to your fingertips.
           </p>
-          
-          <div className='flex items-center gap-2 mt-4'>
-            <img src={assets.googlePlay} alt='google play' className='h-9 w-auto' />
-            
-            <img src={assets.appStore} alt='app store' className='h-9 w-auto' />
-          </div>
         </div>
 
-        <div className='flex-1 flex items-start md:justify-end gap-20 md:gap-40'>
+        <div className='flex-1 flex items-start md:justify-end gap-20 md:gap-20'>
           <div>
-            <h2 className='font-semibold mb-5'>Company</h2>
+            <h2 className='font-semibold mb-5 text-primary'>
+              Links
+            </h2>
             
             <ul className='text-sm space-y-2'>
-                <li><a href='#'>Home</a></li>
-                <li><a href='#'>About Us</a></li>
-                <li><a href='#'>Contact Us</a></li>
-                <li><a href='#'>Privacy Policy</a></li>
+                <li className='flex items-start gap-2 max-w-[250px] leading-snug'>
+                  <Link className='footer-link' onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/'>
+                    Home
+                  </Link>
+                </li>
+
+                <li className='flex items-start gap-2 max-w-[250px] leading-snug'>
+                  <Link className='footer-link' onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/movies'>
+                    Movies
+                  </Link>
+                </li>
+
+                {user && (
+                  <li className='flex items-start gap-2 max-w-[250px] leading-snug'>
+                    <Link className='footer-link' onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/favorites'>
+                      Favorites
+                    </Link>
+                  </li>
+                )}
+
+                {user && (
+                  <li className='flex items-start gap-2 max-w-[250px] leading-snug'>
+                    <Link className='footer-link whitespace-nowrap' onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/my-bookings'>
+                      My Bookings
+                    </Link>
+                  </li>
+                )}
             </ul>
           </div>
 
           <div>
-            <h2 className='font-semibold mb-5'>Get in touch</h2>
+            <h2 className='font-semibold mb-5 text-primary'>
+              Contact
+            </h2>
             
             <div className='text-sm space-y-2'>
-              <p>+1-234-567-890</p>
-              <p>contact@example.com</p>
+              <p className='flex items-start gap-2 max-w-[250px] leading-snug'>
+                <Phone className='inline -mt-0.5 shrink-0' width={15} /> (+63) 917-555-0123
+              </p>
+              
+              <p className='flex items-start gap-2 max-w-[250px] leading-snug'>
+                <Mail className='inline -mt-0.5 shrink-0' width={15} /> support@kinopia.ph
+              </p>
+
+              <p className='flex items-start gap-2 max-w-[250px] leading-snug'>
+                <MapPin className='inline -mt-0.5 shrink-0' width={15} /> Unit 5, 3rd Floor, Horizon Drive, Galeria Angeles, Angeles City, Pampanga 2009
+              </p>
             </div>
           </div>
         </div>
       </div>
       
       <p className='pt-4 text-center text-sm pb-5'>
-        Copyright {new Date().getFullYear()} © <a href='https://prebuiltui.com'> Kinopia</a>. All Rights Reserved.
+        &copy; <span className='font-bold'>{new Date().getFullYear()} <span className='text-primary'> Kinopia</span></span>. All Rights Reserved.
       </p>
     </footer>
   )

@@ -1,4 +1,4 @@
-import { ChartLineIcon, CircleDollarSignIcon, PlayCircleIcon, StarIcon, UsersIcon } from 'lucide-react'
+import { Banknote, ChartNoAxesCombined, Play, StarIcon, UsersRound } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import Loading from '../../components/Loading'
 import Title from '../../components/admin/Title'
@@ -6,6 +6,8 @@ import BlurCircle from '../../components/BlurCircle'
 import { dateFormat } from '../../lib/dateFormat'
 import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
+import MovieTitle from '../../components/MovieTitle'
+import pageTitle from '../../lib/pageTitle'
 
 const Dashboard = () => {
   
@@ -23,10 +25,10 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true)
   
     const dashboardCards = [
-        { title: 'Total Bookings', value: dashboardData.totalBookings || '0', icon: ChartLineIcon },
-        { title: 'Total Revenue', value: currency + dashboardData.totalRevenue || '0', icon: CircleDollarSignIcon },
-        { title: 'Active Shows', value: dashboardData.activeShows.length || '0', icon: PlayCircleIcon },
-        { title: 'Total Users', value: dashboardData.totalUser || '0', icon: UsersIcon }
+        { title: 'Total Bookings', value: (dashboardData.totalBookings || '0').toLocaleString(), icon: ChartNoAxesCombined },
+        { title: 'Total Revenue', value: currency + (dashboardData.totalRevenue || '0').toLocaleString(), icon: Banknote },
+        { title: 'Active Shows', value: (dashboardData.activeShows.length || '0').toLocaleString(), icon: Play },
+        { title: 'Total Users', value: (dashboardData.totalUser || '0').toLocaleString(), icon: UsersRound }
     ]
 
     const fetchDashboardData = async () => {
@@ -52,6 +54,8 @@ const Dashboard = () => {
         }
     }, [user])
 
+    pageTitle('Dashboard | Kinopia (Admin)')
+
     return !loading ? (
         <>
             <Title text1='Admin'
@@ -69,18 +73,18 @@ const Dashboard = () => {
                                     {card.title}
                                </h1> 
 
-                               <p className='text-xl font-medium mt-1'>
+                               <p className='text-xl font-semibold mt-1 text-indigo-300'>
                                     {card.value}
                                </p>
                             </div>
 
-                            <card.icon className='w-6 h-6' />
+                            <card.icon className='w-6 h-6 text-primary' />
                         </div>
                     ))}
                 </div>
             </div>
 
-            <p className='mt-10 text-lg font-medium'>
+            <p className='mt-6 text-lg font-semibold'>
                 Active Shows
             </p>
 
@@ -94,13 +98,13 @@ const Dashboard = () => {
                         
                         <img src={image_base_url + show.movie.poster_path} alt='' className='h-60 w-full object-cover' />
 
-                        <p className='font-medium p-2 truncate'>
-                            {show.movie.title}
+                        <p className='m-2'>
+                            <MovieTitle title={show.movie.title} />
                         </p>
 
                         <div className='flex items-center justify-between px-2'>
                             <p className='text-lg font-medium'>
-                                {currency} {show.showPrice}
+                                {currency}{show.showPrice.toLocaleString()}
                             </p>
 
                             <p className='flex items-center gap-1 text-sm text-gray-400 mt-1 pr-1'>
@@ -110,7 +114,7 @@ const Dashboard = () => {
                             </p>
                         </div>
 
-                        <p className='px-2 pt-2 text-sm text-gray-500'>
+                        <p className='px-2 pt-2 text-sm text-gray-400'>
                             {dateFormat(show.showDateTime)}
                         </p>
                     </div>

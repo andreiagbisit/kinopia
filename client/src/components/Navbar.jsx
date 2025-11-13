@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
-import { MenuIcon, SearchIcon, TicketPlus, XIcon } from 'lucide-react'
+import { MenuIcon, TicketPlus, XIcon, House, Clapperboard, HeartPlus, LogIn, UserRoundCog } from 'lucide-react'
 import { useClerk, UserButton, useUser } from '@clerk/clerk-react'
 import { useAppContext } from '../context/AppContext'
 
@@ -13,12 +13,12 @@ const Navbar = () => {
     
     const navigate = useNavigate()
 
-    const {favoriteMovies} = useAppContext()
+    const {isAdmin} = useAppContext()
 
     return (
         <div className='fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5'>
             <Link to='/' className='max-md:flex-1'>
-                <img src={assets.logo} alt='' className='w-36 h-auto' />
+                <img src={assets.logo} alt='' className='w-36 h-auto drop-shadow-[4px_3px_2px_rgba(0,0,0,0.9)]' />
             </Link>
 
             <div className={`max-md:absolute max-md:top-0 max-md:left-0 max-md:font-medium
@@ -27,38 +27,54 @@ const Navbar = () => {
                             md:rounded-full backdrop-blur bg-black/70 md:bg-white/10 md:border
                             border-zinc-300/20 overflow-hidden transition-[width] duration-300 ${isOpen ? 'max-md:w-full' : 'max-md:w-0'}`}>
 
-                <XIcon className='md:hidden absolute top-6 right-6 w-6 h-6 cursor-pointer' onClick={() => setIsOpen(!isOpen)} />
+                <XIcon className='md:hidden absolute top-6 right-6 w-6 h-6 cursor-pointer transition duration-500 hover:text-primary' 
+                       onClick={() => setIsOpen(!isOpen)} />
 
-                <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/'>Home</Link>
-                <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/movies'>Movies</Link>
-                <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/'>Theaters</Link>
-                <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/'>Releases</Link>
+                <Link className='nav-link' onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/'>
+                    <House className='inline' width={15} />Home
+                </Link>
                 
-                {favoriteMovies.length > 0 &&
-                    <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/favorites'>Favorites</Link>
-                }
+                <Link className='nav-link' onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/movies'>
+                    <Clapperboard className='inline' width={15} />Movies
+                </Link>
+                
+                {user && (
+                    <Link className='nav-link' onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/favorites'>
+                        <HeartPlus className='inline' width={15} />Favorites
+                    </Link>
+                )}
+
+                {user && (
+                    <Link className='nav-link' onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/my-bookings'>
+                        <TicketPlus className='inline' width={15} />My Bookings
+                    </Link>
+                )}
             </div>
 
             <div className='flex items-center gap-8'>
-                <SearchIcon className='max-md:hidden w-6 h-6 cursor-pointer' />
+
                 {
                     !user ? (
-                        <button onClick={openSignIn} className='px-4 py-1 sm:px-7 sm:py-2 bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer'>
-                            Sign In
+                        <button onClick={openSignIn} 
+                                className='px-4 py-1 sm:px-7 sm:py-2 bg-primary hover:bg-primary-dull transition duration-500 rounded-full font-semibold cursor-pointer drop-shadow-[4px_4px_4px_rgba(0,0,0,0.6)] flex items-center gap-2'>
+                            <LogIn className='inline' width={15} /> Sign In
                         </button>
                     ) : (
                         <UserButton>
                             <UserButton.MenuItems>
-                                <UserButton.Action label='My Bookings' 
-                                                   labelIcon={<TicketPlus width={15}/>} 
-                                                   onClick={() => navigate('/my-bookings')} />
+                                {isAdmin && (
+                                    <UserButton.Action label='Admin dashboard'
+                                                       labelIcon={<UserRoundCog className='-mt-1' width={15} />}
+                                                       onClick={() => navigate('/admin')} />
+                                )}
                             </UserButton.MenuItems>
                         </UserButton>
                     )
                 }
             </div>
 
-            <MenuIcon className='max-md:ml-4 md:hidden w-8 h-8 cursor-pointer' onClick={() => setIsOpen(!isOpen)} />
+            <MenuIcon className='max-md:ml-4 md:hidden w-8 h-8 cursor-pointer transition duration-500 hover:text-primary'
+                      onClick={() => setIsOpen(!isOpen)} />
 
         </div>
     )

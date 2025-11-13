@@ -19,26 +19,39 @@ import Loading from './components/Loading'
 
 const App = () => {
   
-  const isAdminRoute = useLocation().pathname.startsWith('/admin')
+  const location = useLocation()
   const { user } = useAppContext()
   
+  const isAdminRoute = useLocation().pathname.startsWith('/admin')
+  const hideNavbar = (!user && (location.pathname === '/my-bookings' || location.pathname === '/favorites'))
+
   return (
     <>
       <Toaster />
-      {!isAdminRoute && <Navbar />}
+      {!isAdminRoute && !hideNavbar && <Navbar />}
 
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/movies' element={<Movies />} />
         <Route path='/movies/:id' element={<MovieDetails />} />
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
-        <Route path='/my-bookings' element={<MyBookings />} />
+        <Route path='/my-bookings' element={user ? <MyBookings /> : (
+          <div className='min-h-screen flex justify-center items-center'>
+            <SignIn fallbackRedirectUrl={'/my-bookings'} />
+          </div>
+        )}/>
+
         <Route path='/loading/:nextUrl' element={<Loading />} />
-        <Route path='/favorites' element={<Favorites />} />
+        
+        <Route path='/favorites' element={user ? <Favorites /> : (
+          <div className='min-h-screen flex justify-center items-center'>
+            <SignIn fallbackRedirectUrl='/favorites' />
+          </div>
+        )}/>
 
         <Route path='/admin/*' element={user ? <Layout/> : (
           <div className='min-h-screen flex justify-center items-center'>
-            <SignIn fallbackRedirectUrl={'/admin'} />
+            <SignIn fallbackRedirectUrl='/admin' />
           </div>
         )}>
           <Route index element={<Dashboard/>} />
@@ -48,7 +61,7 @@ const App = () => {
         </Route>
       </Routes>
 
-      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && !hideNavbar && <Footer />}
     </>
   )
 }

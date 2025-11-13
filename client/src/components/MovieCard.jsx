@@ -1,7 +1,8 @@
-import { StarIcon } from 'lucide-react'
+import { StarIcon, Tickets } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import timeFormat from '../lib/timeFormat'
 import { useAppContext } from '../context/AppContext'
+import MovieTitle from './MovieTitle'
 
 const MovieCard = ({movie}) => {
   
@@ -15,8 +16,8 @@ const MovieCard = ({movie}) => {
                 className='rounded-lg h-52 w-full object-cover object-bottom-right cursor-pointer' 
                 onClick={() => {navigate(`/movies/${movie._id}`); scrollTo(0, 0)}} />
 
-            <p className='font-semibold mt-2 truncate'>
-                {movie.title}
+            <p className='font-semibold mt-2'>
+              <MovieTitle title={movie.title} />
             </p>
 
             <p className='text-sm text-zinc-400 mt-2'>
@@ -24,9 +25,9 @@ const MovieCard = ({movie}) => {
             </p>
 
             <div className='flex items-center justify-between mt-4 pb-3'>
-                <button className='px-4 py-2 text-cs bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer'
+                <button className='px-4 py-2 text-cs bg-primary hover:bg-primary-dull transition duration-500 rounded-full font-semibold cursor-pointer flex items-center gap-2'
                         onClick={() => {navigate(`/movies/${movie._id}`); scrollTo(0, 0)}}>
-                    Buy Tickets
+                    <Tickets className='inline' width={15} /> Buy Tickets
                 </button>
                 
                 <p className='flex items-center gap-1 text-sm text-zinc-400 mt-1 pr-1'>

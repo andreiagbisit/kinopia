@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
 import Loading from '../../components/Loading'
-import { CheckIcon, DeleteIcon, StarIcon } from 'lucide-react'
+import { CheckIcon, DeleteIcon, StarIcon, Plus } from 'lucide-react'
 import Title from '../../components/admin/Title'
 import { kConverter } from '../../lib/kConverter'
 import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
+import MovieTitle from '../../components/MovieTitle'
+import { timeFormat12h } from '../../lib/timeFormat12h'
+import { dateFormatMdy } from '../../lib/dateFormatMdy'
+import pageTitle from '../../lib/pageTitle'
 
 const AddShows = () => {
   
@@ -100,12 +104,14 @@ const AddShows = () => {
         }
     }, [user])
 
+    pageTitle('Add Shows | Kinopia (Admin)')
+
     return nowPlayingMovies.length > 0 ? (
         <>
             <Title text1='Add' 
                     text2='Shows' />
 
-            <p className='mt-10 text-lg font-medium'>
+            <p className='mt-3 text-lg font-semibold'>
                 Now Playing
             </p>
 
@@ -119,7 +125,7 @@ const AddShows = () => {
                             <div className='relative rounded-lg overflow-hidden'>
                                 <img src={image_base_url + movie.poster_path} 
                                      alt=''
-                                     className='w-full object-cover brightness-90' />
+                                     className='w-full h-60 object-cover brightness-90' />
 
                                 <div className='text-sm flex items-center justify-between p-2 bg-black/70 w-full absolute bottom-0 left-0'>
                                     <p className='flex items-center gap-1 text-zinc-400'>
@@ -141,12 +147,12 @@ const AddShows = () => {
                                 </div>
                             )}
 
-                            <p className='font-medium truncate'>
-                                {movie.title}
+                            <p className='mt-2'>
+                                <MovieTitle title={movie.title} />
                             </p>
 
                             <p className='text-zinc-400 text-sm'>
-                                {movie.release_date}
+                                {dateFormatMdy(movie.release_date)}
                             </p>
                         </div>
                     ))}
@@ -155,7 +161,7 @@ const AddShows = () => {
 
             {/* SHOW PRICE INPUT */}
             <div className='mt-8'>
-                <label className='block text-sm font-medium mb-2'>
+                <label className='block mb-1 text-lg font-semibold'>
                     Show Price
                 </label>
 
@@ -174,8 +180,8 @@ const AddShows = () => {
             </div>
 
             {/* DATE & TIME SELECTION */}
-            <div className='mt-6'>
-                <label className='block text-sm font-medium mb-2'>
+            <div className='mt-4'>
+                <label className='block mb-1 text-lg font-semibold'>
                     Select Date & Time
                 </label>
 
@@ -186,24 +192,25 @@ const AddShows = () => {
                            className='outline-none rounded-md' />
                     
                     <button onClick={handleDateTimeAdd}
-                            className='bg-primary/80 text-white px-3 py-2 text-sm rounded-lg hover:bg-primary cursor-pointer'>
-                        Add Time
+                            className='bg-primary text-white px-3 py-2 text-sm font-semibold transition duration-500 rounded-lg hover:bg-primary-dull cursor-pointer'
+                            title='Add Time'>
+                        <Plus width={18} />
                     </button>
                 </div>
             </div>
 
             {/* DISPLAY SELECTED TIME */}
             {Object.keys(dateTimeSelection).length > 0 && (
-                <div className='mt-6'>
-                    <h2 className='mb-2'>
+                <div className='mt-4'>
+                    <h2 className='mb-1 text-lg font-semibold'>
                         Selected Date & Time
                     </h2>
 
                     <ul className='space-y-3'>
                         {Object.entries(dateTimeSelection).map(([date, times]) => (
                             <li key={date}>
-                                <div className='font-medium'>
-                                    {date}
+                                <div className='font-medium text-indigo-300'>
+                                    {dateFormatMdy(date)}
                                 </div>
 
                                 <div className='flex flex-wrap gap-2 mt-1 text-sm'>
@@ -211,7 +218,7 @@ const AddShows = () => {
                                         <div key={time}
                                              className='border border-primary px-2 py-1 flex items-center rounded'>
                                             
-                                            <span>{time}</span>
+                                                {timeFormat12h(time)}
 
                                             <DeleteIcon onClick={() => 
                                                         handleRemoveTime(date, time)}
@@ -228,7 +235,7 @@ const AddShows = () => {
 
             <button onClick={handleSubmit}
                     disabled={addingShow}
-                    className='bg-primary text-white px-8 py-2 mt-6 rounded hover:bg-primary/90 transition-all cursor-pointer'>
+                    className='bg-primary text-white px-8 py-2 mt-6 rounded-full hover:bg-primary-dull transition duration-500 font-semibold cursor-pointer'>
                 Add Show
             </button>
         </>
