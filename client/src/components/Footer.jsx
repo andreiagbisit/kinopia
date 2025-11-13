@@ -13,7 +13,7 @@ const Footer = () => {
     <footer className='px-6 md:px-16 lg:px-36 mt-10 w-full text-zinc-300'>
       <div className='flex flex-col md:flex-row justify-between w-full gap-10 border-b border-zinc-500 pb-14'>
         <div className='md:max-w-96'>
-          <Link to='/'>
+          <Link onClick={() => {scrollTo(0,0); setIsOpen(false)}} to='/'>
             <img alt='logo' className='h-11' src={assets.logo} />
           </Link>
           
