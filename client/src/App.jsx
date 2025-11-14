@@ -37,7 +37,7 @@ const App = () => {
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
         <Route path='/my-bookings' element={user ? <MyBookings /> : (
           <div className='min-h-screen flex justify-center items-center'>
-            <SignIn fallbackRedirectUrl={'/my-bookings'} />
+            <SignIn fallbackRedirectUrl='/my-bookings' />
           </div>
         )}/>
 
