@@ -13,17 +13,22 @@ import Dashboard from './pages/admin/Dashboard'
 import AddShows from './pages/admin/AddShows'
 import ListShows from './pages/admin/ListShows'
 import ListBookings from './pages/admin/ListBookings'
-import { useAppContext } from './context/AppContext'
-import { SignIn } from '@clerk/clerk-react'
+import { SignIn, useUser } from '@clerk/clerk-react'
 import Loading from './components/Loading'
 
 const App = () => {
   
   const location = useLocation()
-  const { user } = useAppContext()
+  const { isLoaded, isSignedIn } = useUser();
+
+  if (!isLoaded) {
+    return (
+      <Loading />
+    );
+  }
   
-  const isAdminRoute = useLocation().pathname.startsWith('/admin')
-  const hideNavbar = (!user && (location.pathname === '/my-bookings' || location.pathname === '/favorites'))
+  const isAdminRoute = location.pathname.startsWith('/admin')
+  const hideNavbar = (!isSignedIn && (location.pathname === '/my-bookings' || location.pathname === '/favorites'))
 
   return (
     <>
@@ -35,7 +40,7 @@ const App = () => {
         <Route path='/movies' element={<Movies />} />
         <Route path='/movies/:id' element={<MovieDetails />} />
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
-        <Route path='/my-bookings' element={user ? <MyBookings /> : (
+        <Route path='/my-bookings' element={isSignedIn ? <MyBookings /> : (
           <div className='min-h-screen flex justify-center items-center'>
             <SignIn fallbackRedirectUrl='/my-bookings' />
           </div>
@@ -43,13 +48,13 @@ const App = () => {
 
         <Route path='/loading/:nextUrl' element={<Loading />} />
         
-        <Route path='/favorites' element={user ? <Favorites /> : (
+        <Route path='/favorites' element={isSignedIn ? <Favorites /> : (
           <div className='min-h-screen flex justify-center items-center'>
             <SignIn fallbackRedirectUrl='/favorites' />
           </div>
         )}/>
 
-        <Route path='/admin/*' element={user ? <Layout/> : (
+        <Route path='/admin/*' element={isSignedIn ? <Layout/> : (
           <div className='min-h-screen flex justify-center items-center'>
             <SignIn fallbackRedirectUrl='/admin' />
           </div>
