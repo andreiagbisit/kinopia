@@ -19,7 +19,7 @@ const Movies = () => {
         All <span class='text-primary font-bold'>Movies</span>
       </p>
 
-      <div className='flex flex-wrap max-sm:justify-center gap-8'>
+      <div className='flex flex-wrap max-sm:justify-center gap-8 pb-8'>
         {shows.map((movie) => (
           <MovieCard movie={movie} key={movie._id} />
         ))}

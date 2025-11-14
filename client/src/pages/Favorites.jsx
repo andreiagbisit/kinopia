@@ -18,7 +18,7 @@ const Favorites = () => {
         Your <span class='text-primary font-bold'>Favorites</span>
       </p>
 
-      <div className='flex flex-wrap max-sm:justify-center gap-8'>
+      <div className='flex flex-wrap max-sm:justify-center gap-8 pb-8'>
         {favoriteMovies.map((movie) => (
           <MovieCard movie={movie} key={movie._id} />
         ))}
