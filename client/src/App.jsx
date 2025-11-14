@@ -13,7 +13,7 @@ import Dashboard from './pages/admin/Dashboard'
 import AddShows from './pages/admin/AddShows'
 import ListShows from './pages/admin/ListShows'
 import ListBookings from './pages/admin/ListBookings'
-import { SignIn, useUser } from '@clerk/clerk-react'
+import { useUser, RedirectToSignIn } from '@clerk/clerk-react'
 import Loading from './components/Loading'
 
 const App = () => {
@@ -40,24 +40,18 @@ const App = () => {
         <Route path='/movies' element={<Movies />} />
         <Route path='/movies/:id' element={<MovieDetails />} />
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
-        <Route path='/my-bookings' element={isSignedIn ? <MyBookings /> : (
-          <div className='min-h-screen flex justify-center items-center'>
-            <SignIn fallbackRedirectUrl='/my-bookings' />
-          </div>
+        <Route path='/my-bookings' element={isSignedIn ? ( <MyBookings /> ) : (
+          <RedirectToSignIn redirectUrl="/my-bookings" />
         )}/>
 
         <Route path='/loading/:nextUrl' element={<Loading />} />
         
-        <Route path='/favorites' element={isSignedIn ? <Favorites /> : (
-          <div className='min-h-screen flex justify-center items-center'>
-            <SignIn fallbackRedirectUrl='/favorites' />
-          </div>
+        <Route path='/favorites' element={isSignedIn ? ( <Favorites /> ) : (
+          <RedirectToSignIn redirectUrl="/favorites" />
         )}/>
 
-        <Route path='/admin/*' element={isSignedIn ? <Layout/> : (
-          <div className='min-h-screen flex justify-center items-center'>
-            <SignIn fallbackRedirectUrl='/admin' />
-          </div>
+        <Route path='/admin/*' element={isSignedIn ? ( <Layout/> ) : (
+          <RedirectToSignIn redirectUrl="/admin" />
         )}>
           <Route index element={<Dashboard/>} />
           <Route path='add-shows' element={<AddShows/>} />
