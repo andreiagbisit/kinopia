@@ -15,18 +15,10 @@ export const AppProvider = ({ children }) => {
 
     const image_base_url = import.meta.env.VITE_TMDB_IMAGE_BASE_URL
 
-    const {user, isLoaded} = useUser()
+    const {user} = useUser()
     const {getToken} = useAuth()
     const location = useLocation()
     const navigate = useNavigate()
-
-    const [isContextReady, setIsContextReady] = useState(false)
-
-    useEffect(() => {
-        if (isLoaded) {
-            setIsContextReady(true)
-        }
-    }, [isLoaded])
     
     const fetchIsAdmin = async () => {
         try {
@@ -89,7 +81,7 @@ export const AppProvider = ({ children }) => {
     const value = {
         axios,
         fetchIsAdmin,
-        user, isUserLoaded: isLoaded && isContextReady, getToken, navigate, isAdmin, shows,
+        user, getToken, navigate, isAdmin, shows,
         favoriteMovies, fetchFavoriteMovies, image_base_url
     }
     
