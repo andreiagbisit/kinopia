@@ -33,7 +33,9 @@ const TrailersSection = () => {
             
             <div className='relative mt-6'>
                 <BlurCircle top='-100px' right='-100px' />
-                <img className='max-h-70 mt-20 mb-10 mx-auto block' src={assets.notFound} alt='' />
+                <img className='max-h-50 mt-20 mb-10 mx-auto block' 
+                     src={assets.notFound} 
+                     alt='' />
 
                 <h1 className='text-3xl font-light text-center mx-3'>
                     There are no trailers available at the moment.

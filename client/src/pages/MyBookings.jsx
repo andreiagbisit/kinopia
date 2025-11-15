@@ -103,7 +103,9 @@ const MyBookings = () => {
         ))
       ) : (
         <div>
-          <img className='max-h-70 mb-10 mx-auto block' src={assets.notFound} alt='' />
+          <img className='max-h-50 mb-10 mx-auto block' 
+               src={assets.notFound} 
+               alt='' />
           
           <h1 className='text-3xl font-light text-center mx-3'>
             No bookings found.

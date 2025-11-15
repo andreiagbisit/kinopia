@@ -24,7 +24,7 @@ const FeaturedSection = () => {
             <div className='flex flex-col items-center justify-center text-center mt-8'>
                 <BlurCircle top='-100px' right='-100px' />
                 
-                <img className='max-h-70 mt-20 mb-10 mx-auto block'
+                <img className='max-h-50 mt-20 mb-10 mx-auto block'
                      src={assets.notFound}
                      alt='' />
                 

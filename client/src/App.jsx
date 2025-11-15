@@ -15,6 +15,7 @@ import ListShows from './pages/admin/ListShows'
 import ListBookings from './pages/admin/ListBookings'
 import { useUser, RedirectToSignIn } from '@clerk/clerk-react'
 import Loading from './components/Loading'
+import PageNotFound from './components/PageNotFound'
 
 const App = () => {
   
@@ -58,6 +59,8 @@ const App = () => {
           <Route path='list-shows' element={<ListShows/>} />
           <Route path='list-bookings' element={<ListBookings/>} />
         </Route>
+
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
 
       {!isAdminRoute && !hideNavbar && <Footer />}
