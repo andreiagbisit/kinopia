@@ -1,5 +1,5 @@
 import Navbar from './components/Navbar'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Movies from './pages/Movies'
 import MovieDetails from './pages/MovieDetails'
@@ -13,7 +13,7 @@ import Dashboard from './pages/admin/Dashboard'
 import AddShows from './pages/admin/AddShows'
 import ListShows from './pages/admin/ListShows'
 import ListBookings from './pages/admin/ListBookings'
-import { useUser, RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react'
+import { useUser, RedirectToSignIn } from '@clerk/clerk-react'
 import Loading from './components/Loading'
 import PageNotFound from './components/PageNotFound'
 import PageNotFoundAdmin from './components/admin/PageNotFoundAdmin'
@@ -21,14 +21,14 @@ import PageNotFoundAdmin from './components/admin/PageNotFoundAdmin'
 const App = () => {
   
   const location = useLocation()
-  const { isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn, user } = useUser()
 
-  if (!isLoaded) {
-    return <Loading />
-  }
+  if (!isLoaded) return <Loading />
   
   const isAdminRoute = location.pathname.startsWith('/admin')
   const hideNavbar = (!isSignedIn && (location.pathname === '/my-bookings' || location.pathname === '/favorites'))
+
+  const isAdmin = isSignedIn && user?.privateMetadata?.role === 'admin'
 
   return (
     <>
@@ -41,55 +41,39 @@ const App = () => {
         <Route path='/movies/:id' element={<MovieDetails />} />
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
         
-        <Route path='/my-bookings' 
-               element={
-                <>
-                  <SignedIn>
-                    <MyBookings />
-                  </SignedIn>
-
-                  <SignedOut>
-                    <RedirectToSignIn redirectUrl='/my-bookings' />
-                  </SignedOut>
-                </>
-              } />
+        <Route path='/my-bookings'
+               element={isSignedIn ? <MyBookings /> : <RedirectToSignIn redirectUrl='/my-bookings' />}
+        />
         
-        <Route path='/favorites' 
-               element={
-                <>
-                  <SignedIn>
-                    <Favorites />
-                  </SignedIn>
+        <Route path='/favorites'
+          element={isSignedIn ? <Favorites /> : <RedirectToSignIn redirectUrl='/favorites' />}
+        />
 
-                  <SignedOut>
-                    <RedirectToSignIn redirectUrl='/favorites' />
-                  </SignedOut>
-                </>
-              } />
-
-        <Route path='/admin/*' 
-               element={
-                <>
-                  <SignedIn>
-                    <Layout />
-                  </SignedIn>
-                  
-                  <SignedOut>
-                    <RedirectToSignIn redirectUrl='/admin' />
-                  </SignedOut>
-                </>
-              }>
+        <Route
+          path='/admin/*'
+          element={
+            isSignedIn ? (
+              isAdmin ? (
+                <Layout />
+              ) : (
+                <Navigate to='/' replace />
+              )
+            ) : (
+              <RedirectToSignIn redirectUrl='/admin' />
+            )
+          }
+        >
 
           <Route index element={<Dashboard/>} />
           <Route path='add-shows' element={<AddShows/>} />
           <Route path='list-shows' element={<ListShows/>} />
           <Route path='list-bookings' element={<ListBookings/>} />
 
-          <Route path="*" element={<PageNotFoundAdmin />} />
+          <Route path='*' element={<PageNotFoundAdmin />} />
         </Route>
 
         <Route path='/loading/:nextUrl' element={<Loading />} />
-        <Route path="*" element={<PageNotFound />} />
+        <Route path='*' element={<PageNotFound />} />
       </Routes>
 
       {!isAdminRoute && !hideNavbar && <Footer />}
