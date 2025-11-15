@@ -13,7 +13,7 @@ import Dashboard from './pages/admin/Dashboard'
 import AddShows from './pages/admin/AddShows'
 import ListShows from './pages/admin/ListShows'
 import ListBookings from './pages/admin/ListBookings'
-import { useUser, RedirectToSignIn } from '@clerk/clerk-react'
+import { useUser, RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react'
 import Loading from './components/Loading'
 import PageNotFound from './components/PageNotFound'
 import PageNotFoundAdmin from './components/admin/PageNotFoundAdmin'
@@ -24,9 +24,7 @@ const App = () => {
   const { isLoaded, isSignedIn } = useUser();
 
   if (!isLoaded) {
-    return (
-      <Loading />
-    );
+    return <Loading />
   }
   
   const isAdminRoute = location.pathname.startsWith('/admin')
@@ -42,19 +40,46 @@ const App = () => {
         <Route path='/movies' element={<Movies />} />
         <Route path='/movies/:id' element={<MovieDetails />} />
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
-        <Route path='/my-bookings' element={isSignedIn ? ( <MyBookings /> ) : (
-          <RedirectToSignIn redirectUrl="/my-bookings" />
-        )}/>
-
-        <Route path='/loading/:nextUrl' element={<Loading />} />
         
-        <Route path='/favorites' element={isSignedIn ? ( <Favorites /> ) : (
-          <RedirectToSignIn redirectUrl="/favorites" />
-        )}/>
+        <Route path='/my-bookings' 
+               element={
+                <>
+                  <SignedIn>
+                    <MyBookings />
+                  </SignedIn>
 
-        <Route path='/admin/*' element={isSignedIn ? ( <Layout/> ) : (
-          <RedirectToSignIn redirectUrl="/admin" />
-        )}>
+                  <SignedOut>
+                    <RedirectToSignIn redirectUrl='/my-bookings' />
+                  </SignedOut>
+                </>
+              } />
+        
+        <Route path='/favorites' 
+               element={
+                <>
+                  <SignedIn>
+                    <Favorites />
+                  </SignedIn>
+
+                  <SignedOut>
+                    <RedirectToSignIn redirectUrl='/favorites' />
+                  </SignedOut>
+                </>
+              } />
+
+        <Route path='/admin/*' 
+               element={
+                <>
+                  <SignedIn>
+                    <Layout />
+                  </SignedIn>
+                  
+                  <SignedOut>
+                    <RedirectToSignIn redirectUrl='/admin' />
+                  </SignedOut>
+                </>
+              }>
+
           <Route index element={<Dashboard/>} />
           <Route path='add-shows' element={<AddShows/>} />
           <Route path='list-shows' element={<ListShows/>} />
@@ -63,6 +88,7 @@ const App = () => {
           <Route path="*" element={<PageNotFoundAdmin />} />
         </Route>
 
+        <Route path='/loading/:nextUrl' element={<Loading />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
 
