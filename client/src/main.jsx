@@ -17,7 +17,11 @@ createRoot(document.getElementById('root')).render(
                    variables: {
                      colorPrimary: '#7545F8',
                    },
-                 }}>
+                 }}
+                 signUpFallbackRedirectUrl='/'
+                 signUpForceRedirectUrl='/'
+                 signInFallbackRedirectUrl='/'
+                 signInForceRedirectUrl='/'>
     <BrowserRouter>
       <AppProvider>
         <App />
