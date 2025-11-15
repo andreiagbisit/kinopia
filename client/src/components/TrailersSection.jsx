@@ -32,8 +32,7 @@ const TrailersSection = () => {
             </p>
             
             <div className='relative mt-6'>
-                <BlurCircle top='-100px' right='-100px' />
-                <img className='max-h-50 mt-20 mb-10 mx-auto block' 
+                <img className='max-h-50 mt-10 mb-10 mx-auto block' 
                      src={assets.notFound} 
                      alt='' />
 

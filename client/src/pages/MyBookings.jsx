@@ -44,8 +44,12 @@ const MyBookings = () => {
   
   return !isLoading ? (
     <div className='relative px-6 md:px-16 lg:px-40 pt-30 md:pt-20 pb-30 md:pb-10 min-h-[80vh]'>
-      <BlurCircle top='100px' left='100px' />
-      <BlurCircle bottom='0px' right='600px' />
+      {bookings.length > 0 && (
+        <>
+          <BlurCircle top='100px' left='100px' />
+          <BlurCircle bottom='0px' right='600px' />
+        </>
+      )}
 
       <p className='text-4xl font-medium my-16'>
         My <span class='text-primary font-bold'>Bookings</span>

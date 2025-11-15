@@ -27,9 +27,6 @@ const Movies = () => {
     </div>
   ) : (
     <div className='relative my-20 mb-20 px-6 md:px-16 lg:px-40 xl:px-44 overflow-hidden min-h-[80vh]'>
-      <BlurCircle top='150px' left='0px' />
-      <BlurCircle bottom='50px' right='50px' />
-
       <p className='text-4xl font-medium my-16'>
         All <span class='text-primary font-bold'>Movies</span>
       </p>

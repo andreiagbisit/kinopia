@@ -14,7 +14,6 @@ const FeaturedSection = () => {
         return (
         <div className='px-6 md:px-16 lg:px-24 xl:px-44 overflow-hidden'>
             <div className='relative flex items-center justify-between pt-20 pb-10'>
-                <BlurCircle top='0' right='-80px' />
                 
                 <p className='text-zinc-300 font-medium text-4xl'>
                     Now <span className='text-primary font-bold'>Showing</span>
@@ -22,15 +21,16 @@ const FeaturedSection = () => {
             </div>
 
             <div className='flex flex-col items-center justify-center text-center mt-8'>
-                <BlurCircle top='-100px' right='-100px' />
                 
-                <img className='max-h-50 mt-20 mb-10 mx-auto block'
+                <img className='max-h-50 mt-5 mb-10 mx-auto block'
                      src={assets.notFound}
                      alt='' />
                 
                 <h1 className='text-3xl font-light'>
                     There are no movies available at the moment.
                 </h1>
+
+                <hr className='mt-15 mb-15 h-0.5 bg-zinc-800 border-0 max-[646px]:w-120 min-[646px]:w-145 max-[680px]:w-100 max-[910px]:w-160 min-[910px]:w-200' />
             </div>
         </div>
         )
