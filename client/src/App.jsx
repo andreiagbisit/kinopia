@@ -23,7 +23,9 @@ const App = () => {
   const location = useLocation()
   const { isLoaded, isSignedIn, user } = useUser()
 
-  if (!isLoaded) return <Loading />
+  if (!isLoaded || (isSignedIn && !user)) {
+    return <Loading />
+  }
   
   const isAdminRoute = location.pathname.startsWith('/admin')
   const hideNavbar = (!isSignedIn && (location.pathname === '/my-bookings' || location.pathname === '/favorites'))
