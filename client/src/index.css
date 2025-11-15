@@ -15,6 +15,10 @@
   .footer-link {
     @apply transition duration-500 hover:text-primary flex items-center gap-2;
   }
+
+  .sign-in-wrapper {
+    @apply min-h-screen flex justify-center items-center;
+  }
 }
 
 @keyframes marquee {

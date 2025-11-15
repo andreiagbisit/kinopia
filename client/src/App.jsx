@@ -13,7 +13,8 @@ import Dashboard from './pages/admin/Dashboard'
 import AddShows from './pages/admin/AddShows'
 import ListShows from './pages/admin/ListShows'
 import ListBookings from './pages/admin/ListBookings'
-import { useUser, RedirectToSignIn } from '@clerk/clerk-react'
+import { useAppContext } from './context/AppContext'
+import { SignIn } from '@clerk/clerk-react'
 import Loading from './components/Loading'
 import PageNotFound from './components/PageNotFound'
 import PageNotFoundAdmin from './components/admin/PageNotFoundAdmin'
@@ -21,12 +22,10 @@ import PageNotFoundAdmin from './components/admin/PageNotFoundAdmin'
 const App = () => {
   
   const location = useLocation()
-  const { isLoaded, isSignedIn } = useUser()
+  const { user } = useAppContext()
 
-  if (!isLoaded) return <Loading />
-  
   const isAdminRoute = location.pathname.startsWith('/admin')
-  const hideNavbar = (!isSignedIn && (location.pathname === '/my-bookings' || location.pathname === '/favorites'))
+  const hideNavbar = (!user && (location.pathname === '/my-bookings' || location.pathname === '/favorites'))
 
   return (
     <>
@@ -39,28 +38,33 @@ const App = () => {
         <Route path='/movies/:id' element={<MovieDetails />} />
         <Route path='/movies/:id/:date' element={<SeatLayout />} />
         
-        <Route path='/my-bookings'
-               element={isSignedIn ? <MyBookings /> : <RedirectToSignIn redirectUrl='/my-bookings' />}
-        />
+        <Route path='/my-bookings' element={user ? <MyBookings /> : (
+          <div className='sign-in-wrapper'>
+            <SignIn fallbackRedirectUrl='/my-bookings' />
+          </div>
+        )}/>
         
-        <Route path='/favorites'
-          element={isSignedIn ? <Favorites /> : <RedirectToSignIn redirectUrl='/favorites' />}
-        />
+        <Route path='/favorites' element={user ? <Favorites /> : (
+          <div className='sign-in-wrapper'>
+            <SignIn fallbackRedirectUrl='/favorites' />
+          </div>
+        )}/>
 
-        <Route path='/admin/*' element={isSignedIn ? <Layout/> : 
-          <RedirectToSignIn redirectUrl="/admin" />
-        }>
-
+        <Route path='/admin/*' element={user ? <Layout/> : (
+          <div className='sign-in-wrapper'>
+            <SignIn fallbackRedirectUrl='/admin' />
+          </div>
+        )}>
+          
           <Route index element={<Dashboard/>} />
           <Route path='add-shows' element={<AddShows/>} />
           <Route path='list-shows' element={<ListShows/>} />
           <Route path='list-bookings' element={<ListBookings/>} />
-
-          <Route path='*' element={<PageNotFoundAdmin />} />
+          <Route path="*" element={<PageNotFoundAdmin />} />
         </Route>
 
         <Route path='/loading/:nextUrl' element={<Loading />} />
-        <Route path='*' element={<PageNotFound />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
 
       {!isAdminRoute && !hideNavbar && <Footer />}
