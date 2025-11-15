@@ -51,19 +51,18 @@ const App = () => {
           element={isSignedIn ? <Favorites /> : <RedirectToSignIn redirectUrl='/favorites' />}
         />
 
-        <Route
-          path='/admin/*'
-          element={
-            isSignedIn ? (
-              isAdmin ? (
-                <Layout />
-              ) : (
-                <Navigate to='/' replace />
-              )
-            ) : (
-              <RedirectToSignIn redirectUrl='/admin' />
-            )
-          }
+        <Route path='/admin/*'
+               element={
+                 !isLoaded ? (
+                   <Loading />
+                 ) : !isSignedIn ? (
+                   <RedirectToSignIn redirectUrl='/admin' />
+                 ) : user?.privateMetadata?.role === 'admin' ? (
+                   <Layout />
+                 ) : (
+                   <Navigate to='/' replace />
+                 )
+               }
         >
 
           <Route index element={<Dashboard/>} />
