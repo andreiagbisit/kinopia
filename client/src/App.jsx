@@ -1,5 +1,5 @@
 import Navbar from './components/Navbar'
-import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Movies from './pages/Movies'
 import MovieDetails from './pages/MovieDetails'
@@ -21,16 +21,12 @@ import PageNotFoundAdmin from './components/admin/PageNotFoundAdmin'
 const App = () => {
   
   const location = useLocation()
-  const { isLoaded, isSignedIn, user } = useUser()
+  const { isLoaded, isSignedIn } = useUser()
 
-  if (!isLoaded || (isSignedIn && !user)) {
-    return <Loading />
-  }
+  if (!isLoaded) return <Loading />
   
   const isAdminRoute = location.pathname.startsWith('/admin')
   const hideNavbar = (!isSignedIn && (location.pathname === '/my-bookings' || location.pathname === '/favorites'))
-
-  const isAdmin = isSignedIn && user?.privateMetadata?.role === 'admin'
 
   return (
     <>
@@ -51,19 +47,9 @@ const App = () => {
           element={isSignedIn ? <Favorites /> : <RedirectToSignIn redirectUrl='/favorites' />}
         />
 
-        <Route path='/admin/*'
-               element={
-                 !isLoaded ? (
-                   <Loading />
-                 ) : !isSignedIn ? (
-                   <RedirectToSignIn redirectUrl='/admin' />
-                 ) : user?.privateMetadata?.role === 'admin' ? (
-                   <Layout />
-                 ) : (
-                   <Navigate to='/' replace />
-                 )
-               }
-        >
+        <Route path='/admin/*' element={isSignedIn ? <Layout/> : 
+          <RedirectToSignIn redirectUrl="/admin" />
+        }>
 
           <Route index element={<Dashboard/>} />
           <Route path='add-shows' element={<AddShows/>} />
