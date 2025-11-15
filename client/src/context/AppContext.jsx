@@ -19,6 +19,14 @@ export const AppProvider = ({ children }) => {
     const {getToken} = useAuth()
     const location = useLocation()
     const navigate = useNavigate()
+
+    const [isContextReady, setIsContextReady] = useState(false)
+
+    useEffect(() => {
+        if (isLoaded) {
+            setIsContextReady(true)
+        }
+    }, [isLoaded])
     
     const fetchIsAdmin = async () => {
         try {
@@ -81,7 +89,7 @@ export const AppProvider = ({ children }) => {
     const value = {
         axios,
         fetchIsAdmin,
-        user, isUserLoaded: isLoaded, getToken, navigate, isAdmin, shows,
+        user, isUserLoaded: isLoaded && isContextReady, getToken, navigate, isAdmin, shows,
         favoriteMovies, fetchFavoriteMovies, image_base_url
     }
     
