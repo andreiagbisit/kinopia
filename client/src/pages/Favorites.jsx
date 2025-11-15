@@ -37,7 +37,7 @@ const Favorites = () => {
            src={assets.notFound} 
            alt='' />
       
-      <h1 className='text-3xl font-light text-center mx-3'>
+      <h1 className='text-3xl font-light text-center mx-3 mb-10'>
         There are no movies added.
       </h1>
     </div>

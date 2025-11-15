@@ -11,11 +11,11 @@ const PageNotFound = () => {
             <BlurCircle top='150px' left='0px' />
             <BlurCircle bottom='50px' right='50px' />
             
-            <img className='max-h-50 mt-20 mb-10 mx-auto block' 
+            <img className='max-h-50 mt-45 mb-10 mx-auto block' 
                  src={assets.cry} 
                  alt='' />
             
-            <h1 className='text-3xl font-light text-center mx-3'>
+            <h1 className='text-3xl font-light text-center mx-3 mb-10'>
                 This page doesn't seem to exist.
             </h1>
         </div>

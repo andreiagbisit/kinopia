@@ -10,7 +10,7 @@ const Movies = () => {
 
   pageTitle('Movies | Kinopia')
   
-  return shows.length < 0 ?  (
+  return shows.length > 0 ?  (
     <div className='relative my-20 mb-20 px-6 md:px-16 lg:px-40 xl:px-44 overflow-hidden min-h-[80vh]'>
       <BlurCircle top='150px' left='0px' />
       <BlurCircle bottom='50px' right='50px' />
@@ -39,7 +39,7 @@ const Movies = () => {
              src={assets.notFound} 
              alt='' />
         
-        <h1 className='text-3xl font-light text-center'>
+        <h1 className='text-3xl font-light text-center mb-10'>
           There are no movies available.
         </h1>
       </div>
