@@ -15,7 +15,7 @@ export const AppProvider = ({ children }) => {
 
     const image_base_url = import.meta.env.VITE_TMDB_IMAGE_BASE_URL
 
-    const {user, isLoaded} = useUser()
+    const {user} = useUser()
     const {getToken} = useAuth()
     const location = useLocation()
     const navigate = useNavigate()
@@ -72,11 +72,11 @@ export const AppProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        if(isLoaded && user) {
+        if(user) {
             fetchIsAdmin()
             fetchFavoriteMovies()
         }
-    }, [isLoaded, user])
+    }, [user])
 
     const value = {
         axios,
