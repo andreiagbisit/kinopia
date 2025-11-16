@@ -22,9 +22,8 @@ import PageNotFoundAdmin from './components/admin/PageNotFoundAdmin'
 const App = () => {
   
   const location = useLocation()
-  const { user } = useAppContext()
-
   const isAdminRoute = location.pathname.startsWith('/admin')
+  const { user } = useAppContext()
   const hideNavbar = (!user && (location.pathname === '/my-bookings' || location.pathname === '/favorites'))
 
   return (
