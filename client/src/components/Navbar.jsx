@@ -62,7 +62,7 @@ const Navbar = () => {
                     ) : (
                         <UserButton>
                             <UserButton.MenuItems>
-                                {isAdmin && (
+                                {user?.privateMetadata?.role === 'admin' && (
                                     <UserButton.Action label='Admin dashboard'
                                                        labelIcon={<UserRoundCog className='-mt-1' width={15} />}
                                                        onClick={() => navigate('/admin')} />
