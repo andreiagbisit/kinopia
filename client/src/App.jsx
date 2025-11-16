@@ -51,7 +51,7 @@ const App = () => {
         )}/>
 
         <Route path='/admin/*'
-               element={user?.privateMetadata?.role === 'admin' ? (
+               element={user?.role === 'admin' ? (
                  <Layout />
                ) : (
                  <div className='sign-in-wrapper'>
@@ -59,15 +59,11 @@ const App = () => {
                  </div>
                )}>
           
-          {isAdmin && (
-            <>
-              <Route index element={<Dashboard/>} />
-              <Route path='add-shows' element={<AddShows/>} />
-              <Route path='list-shows' element={<ListShows/>} />
-              <Route path='list-bookings' element={<ListBookings/>} />
-              <Route path="*" element={<PageNotFoundAdmin />} />
-            </>
-          )}
+          <Route index element={<Dashboard/>} />
+          <Route path='add-shows' element={<AddShows/>} />
+          <Route path='list-shows' element={<ListShows/>} />
+          <Route path='list-bookings' element={<ListBookings/>} />
+          <Route path="*" element={<PageNotFoundAdmin />} />
         </Route>
 
         <Route path='/loading/:nextUrl' element={<Loading />} />
