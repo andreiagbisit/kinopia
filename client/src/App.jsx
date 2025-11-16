@@ -50,11 +50,14 @@ const App = () => {
           </div>
         )}/>
 
-        <Route path='/admin/*' element={user ? <Layout/> : (
-          <div className='sign-in-wrapper'>
-            <SignIn fallbackRedirectUrl='/admin' />
-          </div>
-        )}>
+        <Route path='/admin/*'
+               element={user?.privateMetadata?.role === 'admin' ? (
+                 <Layout />
+               ) : (
+                 <div className='sign-in-wrapper'>
+                   <SignIn fallbackRedirectUrl='/admin' />
+                 </div>
+               )}>
           
           <Route index element={<Dashboard/>} />
           <Route path='add-shows' element={<AddShows/>} />
