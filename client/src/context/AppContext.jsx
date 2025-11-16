@@ -10,6 +10,7 @@ export const AppContext = createContext()
 export const AppProvider = ({ children }) => {
     
     const [isAdmin, setIsAdmin] = useState(false)
+    const [isAdminLoading, setIsAdminLoading] = useState(true)
     const [shows, setShows] = useState([])
     const [favoriteMovies, setFavoriteMovies] = useState([])
 
@@ -21,6 +22,11 @@ export const AppProvider = ({ children }) => {
     const navigate = useNavigate()
     
     const fetchIsAdmin = async () => {
+        if (!user) {
+            setIsAdmin(false)
+            setIsAdminLoading(false)
+            return
+        }
         try {
             const { data } = await axios.get('/api/admin/is-admin', {headers: 
             {Authorization: `Bearer ${await getToken()}`}})
@@ -33,6 +39,8 @@ export const AppProvider = ({ children }) => {
 
         } catch (error) {
             console.error(error)
+        } finally {
+            setIsAdminLoading(false)
         }
     }
 
@@ -72,16 +80,13 @@ export const AppProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        if(user) {
-            fetchIsAdmin()
-            fetchFavoriteMovies()
-        }
+        fetchIsAdmin()
+        if (user) fetchFavoriteMovies()
     }, [user])
 
     const value = {
         axios,
-        fetchIsAdmin,
-        user, getToken, navigate, isAdmin, shows,
+        user, getToken, navigate, isAdmin, isAdminLoading, shows,
         favoriteMovies, fetchFavoriteMovies, image_base_url
     }
     
