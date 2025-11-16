@@ -59,11 +59,15 @@ const App = () => {
                  </div>
                )}>
           
-          <Route index element={<Dashboard/>} />
-          <Route path='add-shows' element={<AddShows/>} />
-          <Route path='list-shows' element={<ListShows/>} />
-          <Route path='list-bookings' element={<ListBookings/>} />
-          <Route path="*" element={<PageNotFoundAdmin />} />
+          {isAdmin && (
+            <>
+              <Route index element={<Dashboard/>} />
+              <Route path='add-shows' element={<AddShows/>} />
+              <Route path='list-shows' element={<ListShows/>} />
+              <Route path='list-bookings' element={<ListBookings/>} />
+              <Route path="*" element={<PageNotFoundAdmin />} />
+            </>
+          )}
         </Route>
 
         <Route path='/loading/:nextUrl' element={<Loading />} />
