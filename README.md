@@ -3,6 +3,15 @@
   A movie ticket booking application built using the <b>MERN stack</b> (<b>MongoDB</b>, <b>Express</b>, <b>React</b>, and <b>Node.js</b>).
 </p>
 
+<ul>
+  <li>
+    You may visit the deployed app here:<br>
+    <a href="https://kinopia.vercel.app" target="_blank">
+      <b>kinopia.vercel.app</b>
+    </a>
+  </li>
+</ul>
+
 <hr>
 
 <h2>Features</h2>
