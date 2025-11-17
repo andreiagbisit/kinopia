@@ -294,7 +294,7 @@ npm run server</code></pre>
 </ul>
 
 <pre><code>VITE_CURRENCY = '[currency symbol]'
-VITE_CLERK_PUBLISHABLE_KEY=[Publishable Key]
+VITE_CLERK_PUBLISHABLE_KEY=[publishable key]
 VITE_BASE_URL = http://localhost:[port number]
 VITE_TMDB_IMAGE_BASE_URL = https://image.tmdb.org/t/p/original</code></pre>
 
