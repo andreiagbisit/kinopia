@@ -147,7 +147,9 @@ const SeatLayout = () => {
         </p>
 
         <div className='mt-2 space-y-1'>
-          {show.dateTime[date].map((item) => (
+          {show.dateTime[date]
+           .sort((a, b) => a.time.localeCompare(b.time))
+           .map((item) => (
             <div className={`flex items-center gap-2 px-6 py-2 w-max rounded-r-md cursor-pointer transition duration-500 ${selectedTime?.time === item.time ? 
                             'bg-primary text-white' : 'hover:bg-primary/20'}`}
                   key={item.time}
