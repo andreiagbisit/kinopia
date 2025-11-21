@@ -79,7 +79,7 @@
   </tr>
 
   <tr>
-    <td><b>Stripe 19.2.1</b></td>
+    <td><b>Stripe 20.0.0</b></td>
     <td>Payment processing</td>
   </tr>
 
@@ -92,7 +92,7 @@
   </tr>
 
   <tr>
-    <td><b>Inngest 3.44.5</b></td>
+    <td><b>Inngest 3.46.0</b></td>
     <td>Webhook endpoint and scheduling</td>
   </tr>
 
@@ -109,28 +109,28 @@
   <tr>
     <td>
       <b>MongoDB Atlas</b><br>
-      <b>Mongoose 8.19.2</b>
+      <b>Mongoose 9.0.0</b>
     </td>
     <td>Database</td>
   </tr>
 
   <tr>
-    <td><b>Axios 1.13.2</b> (<code>client</code>), <b>1.13.1</b> (<code>server</code>)</td>
+    <td><b>Axios 1.13.2</b></td>
     <td>Promise-based HTTP client</td>
   </tr>
 
   <tr>
-    <td><b>Clerk 5.53.4</b></td>
+    <td><b>Clerk React SDK 5.56.2</b></td>
     <td>Authentication and user management SDK</td>
   </tr>
 
   <tr>
     <td>
       <b>React 19.1.1</b><br>
-      <code>react-router-dom</code> <b>7.9.5</b><br>
-      <b>Tailwind CSS 4.1.16</b><br>
+      <code>react-router-dom</code> <b>7.9.6</b><br>
+      <b>Tailwind CSS 4.1.17</b><br>
       <b>PrebuiltUI</b><br>
-      <b>Lucide React 0.552.0</b>
+      <b>Lucide React 0.554.0</b>
     </td>
     <td>UI</td>
   </tr>
@@ -141,7 +141,7 @@
   </tr>
 
   <tr>
-    <td><b>ReactPlayer 3.3.3</b></td>
+    <td><b>ReactPlayer 3.4.0</b></td>
     <td>URL-based video player</td>
   </tr>
 </table>

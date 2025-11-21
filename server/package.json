@@ -12,19 +12,19 @@
   "type": "module",
   "description": "",
   "dependencies": {
-    "@clerk/express": "^1.7.43",
-    "axios": "^1.13.1",
+    "@clerk/express": "^1.7.52",
+    "axios": "^1.13.2",
     "cloudinary": "^2.8.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "inngest": "^3.44.5",
-    "mongoose": "^8.19.2",
+    "inngest": "^3.46.0",
+    "mongoose": "^9.0.0",
     "nodemailer": "^7.0.10",
-    "stripe": "^19.2.1",
+    "stripe": "^20.0.0",
     "svix": "^1.81.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.11"
   }
 }
