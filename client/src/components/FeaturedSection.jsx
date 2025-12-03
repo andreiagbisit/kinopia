@@ -4,6 +4,7 @@ import BlurCircle from './BlurCircle'
 import MovieCard from './MovieCard'
 import { useAppContext } from '../context/AppContext'
 import { assets } from '../assets/assets'
+import { motion } from 'framer-motion'
 
 const FeaturedSection = () => {
   
@@ -36,33 +37,74 @@ const FeaturedSection = () => {
         )
     }
 
+    const parentDiv = {
+        hidden: { opacity: 0, y: 50 },
+        visible: { opacity: 1, y: 0, transition: {  delayChildren: 0.3, staggerChildren: 0.5 } }
+    }
+
+    const fade1 = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.4 } }
+    }
+    
+    const fadeX = {
+        hidden: { opacity: 0, x: -50 },
+        visible: { opacity: 1, x: 0, transition: { duration: 0.7 } }
+    }
+
+    const fade2 = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.4 } }
+    }
+
+    const fadeScale1 = {
+        hidden: { opacity: 0, scale: 0.9 },
+        visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } }
+    }
+
+    const fadeScale2 = {
+        hidden: { opacity: 0, scale: 0.9 },
+        visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } }
+    }
+
     return (
-        <div className='px-6 md:px-16 lg:px-24 xl:px-44 overflow-hidden'>
+        <motion.div className='px-6 md:px-16 lg:px-24 xl:px-44 overflow-hidden'
+                    initial='hidden'
+                    whileInView='visible'
+                    viewport={{ once: true, amount: 0.3 }}
+                    variants={parentDiv}>
             <div className='relative flex items-center justify-between pt-20 pb-10'>
-                <BlurCircle top='0' right='-80px' />
+                <motion.div variants={fade1} className='absolute top-0 right-0'>
+                    <BlurCircle top='0' right='-80px' />
+                </motion.div>
                 
-                <p className='text-zinc-300 font-medium text-4xl'>
-                    Now <span class='text-primary font-bold'>Showing</span>
-                </p>
+                <motion.p className='text-zinc-300 font-medium text-4xl' variants={fadeX}>
+                    Now <span className='text-primary font-bold'>Showing</span>
+                </motion.p>
                 
-                <button onClick={() => navigate('/movies')} className='group flex items-center gap-2 text-md text-zinc-300 font-semibold cursor-pointer transition duration-500 hover:text-primary'>
-                    View All <ChevronRight className='group-hover:translate-x-0.5 w-4.5 h-4.5' />
-                </button>
+                <motion.div variants={fade2}>
+                    <button onClick={() => navigate('/movies')} className='group flex items-center gap-2 text-md text-zinc-300 font-semibold cursor-pointer transition duration-500 hover:text-primary'>
+                        View All <ChevronRight className='group-hover:translate-x-0.5 w-4.5 h-4.5' />
+                    </button>
+                </motion.div>
             </div>
 
             <div className='flex flex-wrap max-sm:justify-center gap-8 mt-8'>
                 {shows.slice(0, 5).map((show) => (
-                    <MovieCard key={show._id} movie={show} />
+                    <motion.div variants={fadeScale1} className='flex flex-wrap'>
+                        <MovieCard key={show._id} movie={show} />
+                    </motion.div>
                 ))}
             </div>
 
-            <div className='flex justify-center mt-20'>
+            <motion.div className='flex justify-center mt-20'
+                        variants={fadeScale2}>
                 <button className='px-10 py-3 bg-primary hover:bg-primary-dull transition duration-500 font-semibold cursor-pointer rounded-full flex items-center gap-2'
                         onClick={() => {navigate('/movies'); scrollTo(0,0)}}>
                     Show More <CircleArrowRight className='inline' width={20} />
                 </button>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     )
 }
 
