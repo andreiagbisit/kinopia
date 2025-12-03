@@ -62,6 +62,13 @@
   
   <tr>
     <td>
+      <b>Vite 7.2.4</b>
+    </td>
+    <td>Development environment</td>
+  </tr>
+  
+  <tr>
+    <td>
       <b>Express 5.1.0</b><br>
       <b>Node.js 22.20.0</b>
     </td>
@@ -129,6 +136,7 @@
       <b>React 19.1.1</b><br>
       <code>react-router-dom</code> <b>7.9.6</b><br>
       <b>Tailwind CSS 4.1.17</b><br>
+      <b>Motion 12.23.25</b><br>
       <b>PrebuiltUI</b><br>
       <b>Lucide React 0.554.0</b>
     </td>
@@ -148,7 +156,7 @@
 
 <hr>
 
-<h2>Installation</h2>
+<h2>Setup</h2>
 
 <h3>Prerequisites</h3>
 <ul>
@@ -260,6 +268,20 @@
       </ul>
     </td>
   </tr>
+
+  <tr>
+    <td>
+      <b>
+        <a href="https://vercel.com/login" target="_blank">Vercel</a>
+      </b><br>
+    </td>
+    <td>
+      <ul>
+        <li>Allows the app to be deployed and accessed on the web.</li>
+        <li>You need to deploy the folders <code>client</code> and <code>server</code> as separate projects.</li>
+      </ul>
+    </td>
+  </tr>
 </table>
 
 <h3>Getting Started</h3>
@@ -289,19 +311,21 @@ npm run server</code></pre>
 <ul>
   <li>
     <code>.env</code> - <b>client-side</b><br>
-    (<i>put this file in the root of</i> <code>client</code>)
+    <b>(LOCAL)</b> - <i>put this file in the root of</i> <code>client</code><br>
+    <b>(DEPLOYED)</b> - <i>Access your client-side's Vercel project and go to <b>Settings</b> > <b>Environment Variables</b> and add them in the fields <b>Key</b> and <b>Value</b></i>
   </li>
 </ul>
 
 <pre><code>VITE_CURRENCY = '[currency symbol]'
 VITE_CLERK_PUBLISHABLE_KEY=[publishable key]
-VITE_BASE_URL = http://localhost:[port number]
+VITE_BASE_URL = http://localhost:[port number] (local) / [Vercel project link of the back-end] (deployed)
 VITE_TMDB_IMAGE_BASE_URL = https://image.tmdb.org/t/p/original</code></pre>
 
 <ul>
   <li>
     <code>.env</code> - <b>server-side</b><br>
-    (<i>put this file in the root of</i> <code>server</code>)
+    <b>(LOCAL)</b> - <i>put this file in the root of</i> <code>server</code><br>
+    <b>(DEPLOYED)</b> - <i>Access your server-side's Vercel project and go to <b>Settings</b> > <b>Environment Variables</b> and add them in the fields <b>Key</b> and <b>Value</b></i>
   </li>
 </ul>
 
@@ -323,6 +347,53 @@ SENDER_EMAIL=[email]
 SMTP_USER=[SMTP login]
 SMTP_PASS=[password]</code></pre>
 
+<h3>Deployment</h3>
+
+<ul>
+  <li>
+    <code>vercel.json</code> <b>configuration</b><br>
+    Create two files named <code>vercel.json</code> then copy and paste the following code. Afterwards, place the files in the root of the folders <code>client</code> and <code>server</code>, according to their code content.
+  </li>
+</ul>
+
+<ul>
+  <li><code>vercel.json</code> - <b>client-side</b></li>
+</ul>
+
+<pre><code>  {
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/"
+      }
+    ]
+  }</code></pre>
+
+<ul>
+  <li><code>vercel.json</code> - <b>server-side</b></li>
+</ul>
+
+<pre><code>{
+    "version": 2,
+    "builds": [
+        {
+            "src": "server.js",
+            "use": "@vercel/node",
+            "config": {
+                "includeFiles": [
+                    "dist/**"
+                ]
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "server.js"
+        }
+    ]
+}</code></pre>
+
 <hr>
 
 <h2>Clerk - set user as admin</h2>
@@ -343,19 +414,5 @@ SMTP_PASS=[password]</code></pre>
   "role": "admin"
   
 </code></pre>
-
-<hr>
-
-<h2>Credits</h2>
-<ul>
-  <li>
-  This is based on a project demonstrated on the YouTube video 
-  <a href="https://youtu.be/Pez37wmUaQM" target="_blank" rel="noopener noreferrer">
-    Build and Deploy a Full Stack Movie Ticket Booking App using React js | MERN Stack Project
-  </a> by <b>GreatStack</b>.<br>
-
-  <i>Certain front-end and back-end functionalities in this take of the project have been added. Some established functionalities seen on the demonstration have also been improved upon.</i>
-  </li>
-</ul>
 
 <hr>
