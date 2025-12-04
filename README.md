@@ -39,7 +39,7 @@
   </li><br>
   
   <li><b>Add 'Now Showing' movies</b><br>
-    Through a dynamically provided set, admin users can add movies with custom showtimes in the app's catalog of active shows. 
+    Through a dynamically provided set, admin users can add movies with custom showtimes and set booking prices in the app's catalog of active shows. 
   </li><br>
   
   <li><b>View added movies and booked users</b><br>
